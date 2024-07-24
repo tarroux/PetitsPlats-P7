@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+
+.yellow {
+    color: #FFD15B;
+} 
+.selected {
+    background-color: #FFD15B;
+}
+@tailwind utilities;
