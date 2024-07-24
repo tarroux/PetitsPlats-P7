@@ -2,7 +2,12 @@
 module.exports = {
   content: ["*.html", "./scripts/components/*.js"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'anton': ['Anton', 'sans-serif'],
+        'manrope': ['Manrope', 'sans-serif']
+      }
+    },
   },
   plugins: [],
 }

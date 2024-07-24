@@ -924,6 +924,14 @@ video {
   text-align: center;
 }
 
+.font-anton {
+  font-family: Anton, sans-serif;
+}
+
+.font-manrope {
+  font-family: Manrope, sans-serif;
+}
+
 .text-5xl {
   font-size: 3rem;
   line-height: 1;
@@ -947,16 +955,6 @@ video {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-
-.text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
 }
 
 .font-normal {
