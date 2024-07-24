@@ -168,14 +168,22 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {Array} - The list of unique ingredients.
      */
     function getUniqueIngredients(recipes) {
-        // console.log(recipes);
-        const allIngredients = recipes.flatMap(recipe => recipe.ingredients.map(ing => {
-            return ing.ingredient.toLowerCase();
-        }));
-        // return ;
-        const ingredients = [...new Set(allIngredients)];
-        console.log(ingredients);
-        return ingredients;
+        const allIngredients = [];
+        for (let i = 0; i < recipes.length; i++) {
+            const ingredients = recipes[i].ingredients;
+            for (let j = 0; j < ingredients.length; j++) {
+                allIngredients.push(ingredients[j].ingredient.toLowerCase());
+            }
+        }
+
+        const uniqueIngredients = [];
+        for (let i = 0; i < allIngredients.length; i++) {
+            if (!uniqueIngredients.includes(allIngredients[i])) {
+                uniqueIngredients.push(allIngredients[i]);
+            }
+        }
+
+        return uniqueIngredients;
     }
     /**
      * Extracts unique appliances from a list of recipes.
@@ -183,11 +191,19 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {Array} - The list of unique appliances.
      */
     function getUniqueAppliances(recipes) {
-        // const appliances = recipes.map(recipe => recipe.appliance);
-        // return [...new Set(appliances)];
-        const allAppliances = recipes.map(recipe => recipe.appliance.toLowerCase());
-        const appliances = [...new Set(allAppliances)];
-        return appliances;
+        const allAppliances = [];
+        for (let i = 0; i < recipes.length; i++) {
+            allAppliances.push(recipes[i].appliance.toLowerCase());
+        }
+
+        const uniqueAppliances = [];
+        for (let i = 0; i < allAppliances.length; i++) {
+            if (!uniqueAppliances.includes(allAppliances[i])) {
+                uniqueAppliances.push(allAppliances[i]);
+            }
+        }
+
+        return uniqueAppliances;
     }
 
     /**
@@ -196,11 +212,22 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {Array} - The list of unique utensils.
      */
     function getUniqueUstensils(recipes) {
-        // const ustensils = recipes.flatMap(recipe => recipe.ustensils);
-        // return [...new Set(ustensils)];
-        const allUstensils = recipes.flatMap(recipe => recipe.ustensils.map(ust => ust.toLowerCase()));
-        const ustensils = [...new Set(allUstensils)];
-        return ustensils;
+        const allUstensils = [];
+        for (let i = 0; i < recipes.length; i++) {
+            const ustensils = recipes[i].ustensils;
+            for (let j = 0; j < ustensils.length; j++) {
+                allUstensils.push(ustensils[j].toLowerCase());
+            }
+        }
+
+        const uniqueUstensils = [];
+        for (let i = 0; i < allUstensils.length; i++) {
+            if (!uniqueUstensils.includes(allUstensils[i])) {
+                uniqueUstensils.push(allUstensils[i]);
+            }
+        }
+
+        return uniqueUstensils;
     }
 
     /**
@@ -209,22 +236,34 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {HTMLElement} element - The element to display the items in.
      */
     function displayList(items, element) {
-        element.innerHTML = items.map(item => `<li class="pt-1 p-3 hover:bg-[#FFD15B]">${capitalizeFirstLetter(item)}</li>`).join('');
-        element.querySelectorAll('li').forEach(item => {
-            item.addEventListener('click', () => {
-                item.classList.toggle('selected');
-                addFilter(item.textContent);
+        let listHTML = '';
+        for (let i = 0; i < items.length; i++) {
+            listHTML += `<li class="pt-1 p-3 hover:bg-[#FFD15B]">${capitalizeFirstLetter(items[i])}</li>`;
+        }
+        element.innerHTML = listHTML;
+
+        const listItems = element.querySelectorAll('li');
+        for (let i = 0; i < listItems.length; i++) {
+            listItems[i].addEventListener('click', () => {
+                listItems[i].classList.toggle('selected');
+                addFilter(listItems[i].textContent);
                 filterRecipes();
             });
-        });
+        }
     }
 
     /**
-     * Adds a selected filter to the list of filters and filters the recipes.
-     * @param {string} text - The text of the filter to add.
-     */
+ * Adds a selected filter to the list of filters and filters the recipes.
+ * @param {string} text - The text of the filter to add.
+ */
     function addFilter(text) {
-        const existingFilters = Array.from(filterSelected.getElementsByTagName('p')).map(p => p.textContent.toLowerCase());
+        const existingFilters = [];
+        const filterElements = filterSelected.getElementsByTagName('p');
+
+        // Convert HTMLCollection to an array of text content
+        for (let i = 0; i < filterElements.length; i++) {
+            existingFilters.push(filterElements[i].textContent.toLowerCase());
+        }
 
         if (!existingFilters.includes(text.toLowerCase())) {
             const p = document.createElement('p');
@@ -238,11 +277,14 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = "w-3.5 h-3.5 ml-2 cursor-pointer";
             img.addEventListener('click', () => {
                 const liElements = document.querySelectorAll(`#ingredient-list li, #appliance-list li, #ustensil-list li`);
-                liElements.forEach(li => {
-                    if (li.textContent.toLowerCase() === text.toLowerCase()) {
-                        li.classList.remove('selected');
+
+                // Convert NodeList to array and iterate to remove 'selected' class
+                for (let i = 0; i < liElements.length; i++) {
+                    if (liElements[i].textContent.toLowerCase() === text.toLowerCase()) {
+                        liElements[i].classList.remove('selected');
                     }
-                });
+                }
+
                 p.remove();
                 filterRecipes();
             });
@@ -266,20 +308,38 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function filterRecipes() {
         const selectedFilters = getSelectedFilters();
-        const filteredRecipes = recipes.filter(recipe => {
-            const ingredientMatch = selectedFilters.every(filter =>
-                recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase()))
-            );
-            const applianceMatch = selectedFilters.every(filter =>
-                recipe.appliance.toLowerCase().includes(filter.toLowerCase())
-            );
-            const ustensilMatch = selectedFilters.every(filter =>
-                recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
-            );
-            return ingredientMatch || applianceMatch || ustensilMatch;
-        });
+        const filteredRecipes = [];
+
+        for (let i = 0; i < recipes.length; i++) {
+            const recipe = recipes[i];
+            let ingredientMatch = true;
+            let applianceMatch = true;
+            let ustensilMatch = true;
+
+            for (let j = 0; j < selectedFilters.length; j++) {
+                const filter = selectedFilters[j].toLowerCase();
+
+                if (!recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter))) {
+                    ingredientMatch = false;
+                }
+
+                if (!recipe.appliance.toLowerCase().includes(filter)) {
+                    applianceMatch = false;
+                }
+
+                if (!recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter))) {
+                    ustensilMatch = false;
+                }
+            }
+
+            if (ingredientMatch || applianceMatch || ustensilMatch) {
+                filteredRecipes.push(recipe);
+            }
+        }
+
         displayResults(filteredRecipes);
     }
+
     /**
      * Updates the recipe count display.
      * @param {number} count - The number of recipes to display.
