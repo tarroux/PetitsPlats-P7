@@ -1,4 +1,4 @@
-// créer un évènement
+// Add event listeners when the DOM content is loaded
 document.addEventListener('DOMContentLoaded', () => {
     let inputHeader = document.getElementById('inputHeader');
     const loopIcon = document.getElementById('loopIcon');
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterSelected = document.getElementById('filter-selected');
 
     resetButton.classList.add('hidden');
-
+    // Display all recipes sorted alphabetically on page load
     displayAllRecipesAlphabetically();
 
     // Change the loop icon on mouseover and mouseout
@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loopIcon.addEventListener('mouseout', () => {
         loopIcon.src = 'assets/elements/loop.png';
     });
-
+    // Handle input change event for the search bar
     inputHeader.addEventListener('input', () => {
         controlInput(inputHeader.value);
     });
-
+    // Handle Enter key press event for the search bar
     inputHeader.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
@@ -29,17 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Afficher le bouton de réinitialisation lorsque l'input est en focus
+    // Show the reset button when the input is focused
     inputHeader.addEventListener('focus', () => {
         resetButton.classList.remove('hidden');
     });
 
-    // Masquer le bouton de réinitialisation lorsque l'input perd le focus
+    // Hide the reset button when the input loses focus
     inputHeader.addEventListener('blur', () => {
         setTimeout(() => resetButton.classList.add('hidden'), 200);
     });
 
-    //reset les valeurs saisies
+    // Reset the input values and clear search results
     resetButton.addEventListener('click', () => {
         inputHeader.value = '';
         inputHeader.setCustomValidity('');
