@@ -80,17 +80,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function searchRecipes(queryWord) {
         queryWord = queryWord.toLowerCase();
         const selectedFilters = getSelectedFilters();
-        return recipes.filter(recipe => {
+        const results = [];
+
+        for (let i = 0; i < recipes.length; i++) {
+            const recipe = recipes[i];
             const matchesQuery = recipe.name.toLowerCase().includes(queryWord) ||
-                recipe.description.toLowerCase(queryWord).includes(queryWord) ||
+                recipe.description.toLowerCase().includes(queryWord) ||
                 recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(queryWord));
-            const matchesFilters = selectedFilters.every(filter =>
-                recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())) ||
-                recipe.appliance.toLowerCase().includes(filter.toLowerCase()) ||
-                recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
-            );
-            return matchesQuery && matchesFilters;
-        });
+
+            let matchesFilters = true;
+            for (let j = 0; j < selectedFilters.length; j++) {
+                const filter = selectedFilters[j].toLowerCase();
+                if (!recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter)) &&
+                    !recipe.appliance.toLowerCase().includes(filter) &&
+                    !recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter))) {
+                    matchesFilters = false;
+                    break;
+                }
+            }
+
+            if (matchesQuery && matchesFilters) {
+                results.push(recipe);
+            }
+        }
+
+        return results;
     }
 
     /**
@@ -100,12 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayResults(results) {
         const cardsContainer = document.getElementById('cardsContainer');
         cardsContainer.innerHTML = '';
-        results.forEach(recipe => generateCard(recipe));
+
+        for (let i = 0; i < results.length; i++) {
+            generateCard(results[i]);
+        }
+
         if (results.length === 0) {
             const errorMessage = document.getElementById('error-message');
             errorMessage.innerHTML = "Oups, nous n'avons trouvé aucune recette qui correspond à votre recherche...";
         }
-        updateRecipeCount(results.length)
+
+        updateRecipeCount(results.length);
     }
 
     /**
