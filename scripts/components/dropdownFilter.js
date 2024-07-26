@@ -69,15 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearIngredientInput = document.getElementById('clear-ingredient-input');
     const clearApplianceInput = document.getElementById('clear-appliance-input');
     const clearUstensilInput = document.getElementById('clear-ustensil-input');
-    // Boutons pour afficher les sections navigation
+    // Buttons to display navigation sections
     const btnIngredients = document.getElementById('btn-ingredients');
     const btnAppliances = document.getElementById('btn-appliances');
     const btnUstensils = document.getElementById('btn-ustensils');
-    // Sections de navigation
+    // Navigation sections
     const navIngredients = document.getElementById('nav-ingredients');
     const navAppliance = document.getElementById('nav-appliance');
     const navUstensils = document.getElementById('nav-ustensils');
-    // IMG fleche
+    // Arrow images
     const imgIngredients = document.getElementById('img-ingredients');
     const imgAppliances = document.getElementById('img-appliances');
     const imgUstensils = document.getElementById('img-ustensils');
