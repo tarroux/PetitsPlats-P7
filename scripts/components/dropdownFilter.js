@@ -110,25 +110,25 @@ document.addEventListener('DOMContentLoaded', () => {
     handleNavToggle(navIngredients, ingredientInput, imgIngredients, btnIngredients);
     handleNavToggle(navAppliance, applianceInput, imgAppliances, btnAppliances);
     handleNavToggle(navUstensils, ustensilInput, imgUstensils, btnUstensils);
-
+    // Clear the ingredient input field and hide the clear button
     clearIngredientInput.addEventListener('click', () => {
         ingredientInput.value = '';
         filterIngredients();
         clearIngredientInput.classList.add('hidden');
     });
-
+    // Clear the appliance input field and hide the clear button
     clearApplianceInput.addEventListener('click', () => {
         applianceInput.value = '';
         filterAppliances();
         clearApplianceInput.classList.add('hidden');
     });
-
+    // Clear the ustensil input field and hide the clear button
     clearUstensilInput.addEventListener('click', () => {
         ustensilInput.value = '';
         filterUstensils();
         clearUstensilInput.classList.add('hidden');
     });
-
+    // Show or hide the clear button based on the input value for ingredients
     ingredientInput.addEventListener('input', () => {
         if (ingredientInput.value) {
             clearIngredientInput.classList.remove('hidden');
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearIngredientInput.classList.add('hidden');
         }
     });
-
+    // Show or hide the clear button based on the input value for appliances
     applianceInput.addEventListener('input', () => {
         if (applianceInput.value) {
             clearApplianceInput.classList.remove('hidden');
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearApplianceInput.classList.add('hidden');
         }
     });
-
+    // Show or hide the clear button based on the input value for ustensils
     ustensilInput.addEventListener('input', () => {
         if (ustensilInput.value) {
             clearUstensilInput.classList.remove('hidden');
@@ -253,9 +253,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
- * Adds a selected filter to the list of filters and filters the recipes.
- * @param {string} text - The text of the filter to add.
- */
+    * Adds a selected filter to the list of filters and filters the recipes.
+    * @param {string} text - The text of the filter to add.
+    */
     function addFilter(text) {
         const existingFilters = [];
         const filterElements = filterSelected.getElementsByTagName('p');
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayList(filteredUstensils, ustensilList);
     }
 
-    // Extraire et afficher les ingrédients, appareils et ustensiles
+    // Extract and display unique ingredients, appliances, and utensils
     const uniqueIngredients = getUniqueIngredients(recipes);
     const uniqueAppliances = getUniqueAppliances(recipes);
     const uniqueUstensils = getUniqueUstensils(recipes);
@@ -402,11 +402,11 @@ document.addEventListener('DOMContentLoaded', () => {
     displayList(uniqueAppliances, applianceList);
     displayList(uniqueUstensils, ustensilList);
 
-    // Ajouter des écouteurs d'événements pour les inputs des dropdown
+    // Add event listeners for the dropdown inputs
     ingredientInput.addEventListener('input', filterIngredients);
     applianceInput.addEventListener('input', filterAppliances);
     ustensilInput.addEventListener('input', filterUstensils);
 
-    // Mettre à jour le compteur de recettes lors du chargement initial
+    // Update the recipe count on initial load
     updateRecipeCount(recipes.length);
 });

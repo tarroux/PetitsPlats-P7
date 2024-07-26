@@ -1,3 +1,7 @@
+/**
+ * Generates a recipe card and appends it to the cards container.
+ * @param {Object} recipe - The recipe object to generate the card for.
+ */
 function generateCard(recipe) {
     const cardsContainer = document.getElementById('cardsContainer');
     const card = document.createElement('article');
