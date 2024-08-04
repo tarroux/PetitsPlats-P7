@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     let inputHeader = document.getElementById('inputHeader');
     const loopIcon = document.getElementById('loopIcon');
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resetButton.classList.add('hidden');
 
-    // Display all recipes sorted alphabetically on page load
     displayAllRecipesAlphabetically();
 
     // Change the loop icon on mouseover and mouseout
@@ -18,28 +16,29 @@ document.addEventListener('DOMContentLoaded', () => {
     loopIcon.addEventListener('mouseout', () => {
         loopIcon.src = 'assets/elements/loop.png';
     });
-    // Handle input change event for the search bar
+
     inputHeader.addEventListener('input', () => {
         controlInput(inputHeader.value);
     });
-    // Handle Enter key press event for the search bar
+
     inputHeader.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
             controlInput(inputHeader.value);
         }
     });
-    // Show the reset button when the input is focused
+
+    // Afficher le bouton de réinitialisation lorsque l'input est en focus
     inputHeader.addEventListener('focus', () => {
         resetButton.classList.remove('hidden');
     });
 
-    // Hide the reset button when the input loses focus
+    // Masquer le bouton de réinitialisation lorsque l'input perd le focus
     inputHeader.addEventListener('blur', () => {
         setTimeout(() => resetButton.classList.add('hidden'), 200);
     });
 
-    // Reset the input values and clear search results
+    //reset les valeurs saisies
     resetButton.addEventListener('click', () => {
         inputHeader.value = '';
         inputHeader.setCustomValidity('');
@@ -80,31 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function searchRecipes(queryWord) {
         queryWord = queryWord.toLowerCase();
         const selectedFilters = getSelectedFilters();
-        const results = [];
-
-        for (let i = 0; i < recipes.length; i++) {
-            const recipe = recipes[i];
+        return recipes.filter(recipe => {
             const matchesQuery = recipe.name.toLowerCase().includes(queryWord) ||
-                recipe.description.toLowerCase().includes(queryWord) ||
+                recipe.description.toLowerCase(queryWord).includes(queryWord) ||
                 recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(queryWord));
-
-            let matchesFilters = true;
-            for (let j = 0; j < selectedFilters.length; j++) {
-                const filter = selectedFilters[j].toLowerCase();
-                if (!recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter)) &&
-                    !recipe.appliance.toLowerCase().includes(filter) &&
-                    !recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter))) {
-                    matchesFilters = false;
-                    break;
-                }
-            }
-
-            if (matchesQuery && matchesFilters) {
-                results.push(recipe);
-            }
-        }
-
-        return results;
+            const matchesFilters = selectedFilters.every(filter =>
+                recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())) ||
+                recipe.appliance.toLowerCase().includes(filter.toLowerCase()) ||
+                recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
+            );
+            return matchesQuery && matchesFilters;
+        });
     }
 
     /**
@@ -114,17 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayResults(results) {
         const cardsContainer = document.getElementById('cardsContainer');
         cardsContainer.innerHTML = '';
-
-        for (let i = 0; i < results.length; i++) {
-            generateCard(results[i]);
-        }
-
-        if (results.length === 0) {
-            const errorMessage = document.getElementById('error-message');
-            errorMessage.innerHTML = "Oups, nous n'avons trouvé aucune recette qui correspond à votre recherche...";
-        }
-
-        updateRecipeCount(results.length);
+        results.forEach(recipe => generateCard(recipe));
+        updateRecipeCount(results.length)
     }
 
     /**

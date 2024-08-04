@@ -69,15 +69,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearIngredientInput = document.getElementById('clear-ingredient-input');
     const clearApplianceInput = document.getElementById('clear-appliance-input');
     const clearUstensilInput = document.getElementById('clear-ustensil-input');
-    // Buttons to display navigation sections
+    // Boutons pour afficher les sections navigation
     const btnIngredients = document.getElementById('btn-ingredients');
     const btnAppliances = document.getElementById('btn-appliances');
     const btnUstensils = document.getElementById('btn-ustensils');
-    // Navigation sections
+    // Sections de navigation
     const navIngredients = document.getElementById('nav-ingredients');
     const navAppliance = document.getElementById('nav-appliance');
     const navUstensils = document.getElementById('nav-ustensils');
-    // Arrow images
+    // IMG fleche
     const imgIngredients = document.getElementById('img-ingredients');
     const imgAppliances = document.getElementById('img-appliances');
     const imgUstensils = document.getElementById('img-ustensils');
@@ -110,25 +110,25 @@ document.addEventListener('DOMContentLoaded', () => {
     handleNavToggle(navIngredients, ingredientInput, imgIngredients, btnIngredients);
     handleNavToggle(navAppliance, applianceInput, imgAppliances, btnAppliances);
     handleNavToggle(navUstensils, ustensilInput, imgUstensils, btnUstensils);
-    // Clear the ingredient input field and hide the clear button
+
     clearIngredientInput.addEventListener('click', () => {
         ingredientInput.value = '';
         filterIngredients();
         clearIngredientInput.classList.add('hidden');
     });
-    // Clear the appliance input field and hide the clear button
+
     clearApplianceInput.addEventListener('click', () => {
         applianceInput.value = '';
         filterAppliances();
         clearApplianceInput.classList.add('hidden');
     });
-    // Clear the ustensil input field and hide the clear button
+
     clearUstensilInput.addEventListener('click', () => {
         ustensilInput.value = '';
         filterUstensils();
         clearUstensilInput.classList.add('hidden');
     });
-    // Show or hide the clear button based on the input value for ingredients
+
     ingredientInput.addEventListener('input', () => {
         if (ingredientInput.value) {
             clearIngredientInput.classList.remove('hidden');
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearIngredientInput.classList.add('hidden');
         }
     });
-    // Show or hide the clear button based on the input value for appliances
+
     applianceInput.addEventListener('input', () => {
         if (applianceInput.value) {
             clearApplianceInput.classList.remove('hidden');
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearApplianceInput.classList.add('hidden');
         }
     });
-    // Show or hide the clear button based on the input value for ustensils
+
     ustensilInput.addEventListener('input', () => {
         if (ustensilInput.value) {
             clearUstensilInput.classList.remove('hidden');
@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayList(filteredUstensils, ustensilList);
     }
 
-    // Extract and display unique ingredients, appliances, and utensils
+    // Extraire et afficher les ingrédients, appareils et ustensiles
     const uniqueIngredients = getUniqueIngredients(recipes);
     const uniqueAppliances = getUniqueAppliances(recipes);
     const uniqueUstensils = getUniqueUstensils(recipes);
@@ -342,10 +342,11 @@ document.addEventListener('DOMContentLoaded', () => {
     displayList(uniqueAppliances, applianceList);
     displayList(uniqueUstensils, ustensilList);
 
-    // Add event listeners for the dropdown inputs
+    // Ajouter des écouteurs d'événements pour les inputs des dropdown
     ingredientInput.addEventListener('input', filterIngredients);
     applianceInput.addEventListener('input', filterAppliances);
     ustensilInput.addEventListener('input', filterUstensils);
-    // Update the recipe count on initial load
+
+    // Mettre à jour le compteur de recettes lors du chargement initial
     updateRecipeCount(recipes.length);
 });
