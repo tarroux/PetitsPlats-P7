@@ -80,6 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const imgAppliances = document.getElementById('img-appliances');
     const imgUstensils = document.getElementById('img-ustensils');
     /**
+     * Checks if any list item is selected.
+     * @param {HTMLElement} listElement - The list element to check.
+     * @returns {boolean} - True if any item is selected, false otherwise.
+     */
+    function hasSelectedItems(listElement) {
+        return Array.from(listElement.querySelectorAll('li')).some(item => item.classList.contains('selected'));
+    }
+    /**
      * Toggles the height of the navigation element and updates the image when the button is clicked or when the mouse leaves the navigation element.
      * @param {HTMLElement} navElement - The navigation element to toggle.
      * @param {HTMLElement} inputElement - The input element associated with the navigation.
@@ -262,9 +270,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {HTMLElement} imgElement - The image element to update.
      */
     function closeDropdown(navElement, imgElement) {
-        navElement.classList.add('h-14');
-        navElement.classList.remove('h-auto');
-        imgElement.src = 'assets/elements/VectorUp.png';
+        if (!hasSelectedItems(navElement.querySelector('ul'))) {
+            navElement.classList.add('h-14');
+            navElement.classList.remove('h-auto');
+            imgElement.src = 'assets/elements/VectorUp.png';
+        }
     }
     /**
      * Gets the list of selected filters.
