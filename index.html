@@ -21,8 +21,8 @@
         </div>
         <div class="flex justify-center mt-8">
             <div class=" w-4/6 flex items-center gap-x-3 border-2 border-white rounded-md bg-white">
-                <input id="inputHeader" placeholder="Rechercher une recette, un ingrédient, ..." type="text" name="search" class="px-4 py-2 w-full border-white text-[#7A7A7A]font-manrope">
-                <img id="resetButton" src="assets/elements/Vector.png" alt="reset" class="w-3.5 h-3.5">
+                <input id="input-header" placeholder="Rechercher une recette, un ingrédient, ..." type="text" name="search" class="px-4 py-2 w-full border-white text-[#7A7A7A]font-manrope">
+                <img id="reset-button" src="assets/elements/Vector.png" alt="reset" class="w-3.5 h-3.5">
                 <div class="flex items-center justify-center p-1"><!-- id="searchButton"  type="submit"-->
                     <img id="loopIcon" src="assets/elements/loop.png" alt="loop">
                 </div>
@@ -37,11 +37,10 @@
     </div>
     <div id="filter-selected" class="mt-5 flex gap-8"></div>
     <!-- CARDS -->
-    <div id="cardsContainer" class="w-max md:w-auto my-8 flex flex-wrap justify-between"></div>
+    <div id="cards-container" class="w-max md:w-auto my-8 flex flex-wrap justify-between"></div>
     <p id="error-message" class="flex justify-center font-anton"></p>
 </main>
-    <script src="recipes.js"></script>
-    <script src="scripts/services/getData.js"></script>
+    <script src="/recipes.js"></script>
     <script src="scripts/components/card.js"></script>
     <script src="scripts/components/dropdownFilter.js"></script>
     <script src="scripts/components/headerNavigation.js"></script>

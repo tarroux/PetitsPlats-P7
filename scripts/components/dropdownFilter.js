@@ -2,7 +2,6 @@
  * Initializes the dropdown filter elements and sets their HTML content.
  */
 const dropdownFilter = document.getElementById('dropdown-filter');
-
 dropdownFilter.innerHTML = `
     <div class="flex gap-8 ">
         <nav id="nav-ingredients" class="bg-white w-48 h-14 flex flex-col items-center py-1 rounded-lg overflow-hidden">
@@ -48,9 +47,8 @@ dropdownFilter.innerHTML = `
             </div>
         </nav>
     </div>
-    <p id="recipeCount" class="font-anton text-xl"></p>
+    <p id="recipe-count" class="font-anton text-xl"></p>
 `;
-
 /**
  * Sets up event listeners and handles the initialization of various elements when the DOM content is loaded.
  */
@@ -81,7 +79,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const imgIngredients = document.getElementById('img-ingredients');
     const imgAppliances = document.getElementById('img-appliances');
     const imgUstensils = document.getElementById('img-ustensils');
-
+    /**
+     * Checks if any list item is selected.
+     * @param {HTMLElement} listElement - The list element to check.
+     * @returns {boolean} - True if any item is selected, false otherwise.
+     */
+    function hasSelectedItems(listElement) {
+        const items = listElement.querySelectorAll('li');
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].classList.contains('selected')) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * Toggles the height of the navigation element and updates the image when the button is clicked or when the mouse leaves the navigation element.
      * @param {HTMLElement} navElement - The navigation element to toggle.
@@ -99,14 +110,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // navElement.addEventListener('mouseleave', () => {
+        //     if (!inputElement.value && !getSelectedFilters().length) {
+        //         navElement.classList.add('h-14');
+        //         imgElement.src = 'assets/elements/VectorUp.png';
+        //     }
+        // });
         navElement.addEventListener('mouseleave', () => {
-            if (!inputElement.value && !getSelectedFilters().length) {
+            if (!inputElement.value && !hasSelectedItems(navElement.querySelector('ul'))) {
                 navElement.classList.add('h-14');
                 imgElement.src = 'assets/elements/VectorUp.png';
             }
         });
     }
-
     handleNavToggle(navIngredients, ingredientInput, imgIngredients, btnIngredients);
     handleNavToggle(navAppliance, applianceInput, imgAppliances, btnAppliances);
     handleNavToggle(navUstensils, ustensilInput, imgUstensils, btnUstensils);
@@ -152,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clearUstensilInput.classList.add('hidden');
         }
     });
-
     /**
      * Capitalizes the first letter of a string and makes the rest of the string lowercase.
      * @param {string} string - The string to capitalize.
@@ -161,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
-
     /**
      * Extracts unique ingredients from a list of recipes.
      * @param {Array} recipes - The list of recipes.
@@ -175,14 +189,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 allIngredients.push(ingredients[j].ingredient.toLowerCase());
             }
         }
-
         const uniqueIngredients = [];
         for (let i = 0; i < allIngredients.length; i++) {
             if (!uniqueIngredients.includes(allIngredients[i])) {
                 uniqueIngredients.push(allIngredients[i]);
             }
         }
-
         return uniqueIngredients;
     }
     /**
@@ -195,17 +207,14 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < recipes.length; i++) {
             allAppliances.push(recipes[i].appliance.toLowerCase());
         }
-
         const uniqueAppliances = [];
         for (let i = 0; i < allAppliances.length; i++) {
             if (!uniqueAppliances.includes(allAppliances[i])) {
                 uniqueAppliances.push(allAppliances[i]);
             }
         }
-
         return uniqueAppliances;
     }
-
     /**
      * Extracts unique utensils from a list of recipes.
      * @param {Array} recipes - The list of recipes.
@@ -219,17 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 allUstensils.push(ustensils[j].toLowerCase());
             }
         }
-
         const uniqueUstensils = [];
         for (let i = 0; i < allUstensils.length; i++) {
             if (!uniqueUstensils.includes(allUstensils[i])) {
                 uniqueUstensils.push(allUstensils[i]);
             }
         }
-
         return uniqueUstensils;
     }
-
     /**
      * Displays a list of items in a given element.
      * @param {Array} items - The items to display.
@@ -251,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-
     /**
     * Adds a selected filter to the list of filters and filters the recipes.
     * @param {string} text - The text of the filter to add.
@@ -259,17 +264,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function addFilter(text) {
         const existingFilters = [];
         const filterElements = filterSelected.getElementsByTagName('p');
-
         // Convert HTMLCollection to an array of text content
         for (let i = 0; i < filterElements.length; i++) {
             existingFilters.push(filterElements[i].textContent.toLowerCase());
         }
-
         if (!existingFilters.includes(text.toLowerCase())) {
             const p = document.createElement('p');
             p.className = "w-36 h-14 bg-[#FFD15B] rounded-lg flex justify-between items-center p-2";
             p.textContent = text;
-
             const img = document.createElement('img');
             img.id = "cancel";
             img.src = "assets/elements/Vector.png";
@@ -277,24 +279,35 @@ document.addEventListener('DOMContentLoaded', () => {
             img.className = "w-3.5 h-3.5 ml-2 cursor-pointer";
             img.addEventListener('click', () => {
                 const liElements = document.querySelectorAll(`#ingredient-list li, #appliance-list li, #ustensil-list li`);
-
                 // Convert NodeList to array and iterate to remove 'selected' class
                 for (let i = 0; i < liElements.length; i++) {
                     if (liElements[i].textContent.toLowerCase() === text.toLowerCase()) {
                         liElements[i].classList.remove('selected');
                     }
                 }
-
                 p.remove();
                 filterRecipes();
+                closeDropdown(navIngredients, imgIngredients);
+                closeDropdown(navAppliance, imgAppliances);
+                closeDropdown(navUstensils, imgUstensils);
             });
-
             p.appendChild(img);
             filterSelected.appendChild(p);
             filterRecipes();
         }
     }
-
+    /**
+     * Closes the dropdown by setting its height and arrow image.
+     * @param {HTMLElement} navElement - The navigation element to close.
+     * @param {HTMLElement} imgElement - The image element to update.
+     */
+    function closeDropdown(navElement, imgElement) {
+        if (!hasSelectedItems(navElement.querySelector('ul'))) {
+            navElement.classList.add('h-14');
+            navElement.classList.remove('h-auto');
+            imgElement.src = 'assets/elements/VectorUp.png';
+        }
+    }
     /**
      * Gets the list of selected filters.
      * @returns {Array} - The list of selected filters.
@@ -302,64 +315,53 @@ document.addEventListener('DOMContentLoaded', () => {
     function getSelectedFilters() {
         return Array.from(filterSelected.querySelectorAll('p')).map(p => p.textContent);
     }
-
     /**
      * Filters the recipes based on the selected filters and displays the results.
      */
     function filterRecipes() {
         const selectedFilters = getSelectedFilters();
         const filteredRecipes = [];
-
         for (let i = 0; i < recipes.length; i++) {
             const recipe = recipes[i];
             let ingredientMatch = true;
             let applianceMatch = true;
             let ustensilMatch = true;
-
             for (let j = 0; j < selectedFilters.length; j++) {
                 const filter = selectedFilters[j].toLowerCase();
-
                 if (!recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter))) {
                     ingredientMatch = false;
                 }
-
                 if (!recipe.appliance.toLowerCase().includes(filter)) {
                     applianceMatch = false;
                 }
-
                 if (!recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter))) {
                     ustensilMatch = false;
                 }
             }
-
             if (ingredientMatch || applianceMatch || ustensilMatch) {
                 filteredRecipes.push(recipe);
             }
         }
-
         displayResults(filteredRecipes);
     }
-
     /**
      * Updates the recipe count display.
      * @param {number} count - The number of recipes to display.
      */
     function updateRecipeCount(count) {
-        const recipeCountElement = document.getElementById('recipeCount');
+        const recipeCountElement = document.getElementById('recipe-count');
         recipeCountElement.textContent = `${count} recettes`;
     }
-
     /**
      * Displays the filtered recipes.
      * @param {Array} results - The list of filtered recipes.
      */
     function displayResults(results) {
-        const cardsContainer = document.getElementById('cardsContainer');
+        const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = '';
         results.forEach(recipe => generateCard(recipe));
         updateRecipeCount(results.length);
     }
-
     /**
      * Filters and displays the ingredients based on the input value.
      */
@@ -370,7 +372,6 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         displayList(filteredIngredients, ingredientList);
     }
-
     /**
      * Filters and displays the appliances based on the input value.
      */
@@ -381,7 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         displayList(filteredAppliances, applianceList);
     }
-
     /**
      * Filters and displays the ustensils based on the input value.
      */
@@ -392,21 +392,17 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         displayList(filteredUstensils, ustensilList);
     }
-
     // Extract and display unique ingredients, appliances, and utensils
     const uniqueIngredients = getUniqueIngredients(recipes);
     const uniqueAppliances = getUniqueAppliances(recipes);
     const uniqueUstensils = getUniqueUstensils(recipes);
-
     displayList(uniqueIngredients, ingredientList);
     displayList(uniqueAppliances, applianceList);
     displayList(uniqueUstensils, ustensilList);
-
     // Add event listeners for the dropdown inputs
     ingredientInput.addEventListener('input', filterIngredients);
     applianceInput.addEventListener('input', filterAppliances);
     ustensilInput.addEventListener('input', filterUstensils);
-
     // Update the recipe count on initial load
     updateRecipeCount(recipes.length);
 });

@@ -3,7 +3,7 @@
  * @param {Object} recipe - The recipe object to generate the card for.
  */
 function generateCard(recipe) {
-    const cardsContainer = document.getElementById('cardsContainer');
+    const cardsContainer = document.getElementById('cards-container');
     const card = document.createElement('article');
     card.classList.add('w-96', 'mb-8', 'flex', 'flex-col', 'border', 'border-gray-300', 'rounded-lg', 'shadow-lg', 'overflow-hidden');
 
@@ -17,7 +17,6 @@ function generateCard(recipe) {
             </li>
         `;
     }
-
     card.innerHTML = `
         <div class="relative w-96 h-64">
             <img class="w-full h-64 object-cover" src="assets/recettes/${recipe.image}" alt="${recipe.name}" loading="lazy" onerror="this.onerror=null;this.src='assets/elements/placeholder.png';">

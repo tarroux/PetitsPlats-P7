@@ -1,8 +1,8 @@
 // Add event listeners when the DOM content is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    let inputHeader = document.getElementById('inputHeader');
+    let inputHeader = document.getElementById('input-header');
     const loopIcon = document.getElementById('loopIcon');
-    const resetButton = document.getElementById('resetButton');
+    const resetButton = document.getElementById('reset-button');
     const filterSelected = document.getElementById('filter-selected');
 
     resetButton.classList.add('hidden');
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {Array} results - List of recipes to display.
      */
     function displayResults(results) {
-        const cardsContainer = document.getElementById('cardsContainer');
+        const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = '';
 
         for (let i = 0; i < results.length; i++) {
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * Clear the displayed results and show all recipes.
      */
     function clearResults() {
-        const cardsContainer = document.getElementById('cardsContainer');
+        const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = '';
         displayAllRecipesAlphabetically();
     }
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {number} count - The number of recipes to display.
      */
     function updateRecipeCount(count) {
-        const recipeCountElement = document.getElementById('recipeCount');
+        const recipeCountElement = document.getElementById('recipe-count');
         recipeCountElement.textContent = `${count} recettes`;
     }
 });
