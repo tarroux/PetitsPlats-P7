@@ -1,51 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let inputHeader = document.getElementById('inputHeader');
+    let inputHeader = document.getElementById('input-header');
     const loopIcon = document.getElementById('loopIcon');
-    const resetButton = document.getElementById('resetButton');
+    const resetButton = document.getElementById('reset-button');
     const filterSelected = document.getElementById('filter-selected');
-
     resetButton.classList.add('hidden');
-
     displayAllRecipesAlphabetically();
-
-    // Change the loop icon on mouseover and mouseout
     loopIcon.addEventListener('mouseover', () => {
         loopIcon.src = 'assets/elements/yellowLoop.png';
     });
-
     loopIcon.addEventListener('mouseout', () => {
         loopIcon.src = 'assets/elements/loop.png';
     });
-
     inputHeader.addEventListener('input', () => {
         controlInput(inputHeader.value);
     });
-
     inputHeader.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
             controlInput(inputHeader.value);
         }
     });
-
-    // Afficher le bouton de réinitialisation lorsque l'input est en focus
     inputHeader.addEventListener('focus', () => {
         resetButton.classList.remove('hidden');
     });
-
-    // Masquer le bouton de réinitialisation lorsque l'input perd le focus
     inputHeader.addEventListener('blur', () => {
         setTimeout(() => resetButton.classList.add('hidden'), 200);
     });
-
-    //reset les valeurs saisies
     resetButton.addEventListener('click', () => {
         inputHeader.value = '';
         inputHeader.setCustomValidity('');
         clearResults();
         console.log("Recherche réinitialisée");
     });
-
     /**
      * Control the validity of the input and display results if valid.
      * @param {string} inputValue - The value of the input.
@@ -59,10 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             inputHeader.setCustomValidity('Veuillez entrer au moins 3 caractères pour effectuer une recherche.');
             inputHeader.reportValidity();
-            console.log("Veuillez entrer au moins 3 caractères pour effectuer une recherche.");
         }
     }
-
     /**
      * Retrieve the selected filters.
      * @returns {Array} - List of selected filters.
@@ -70,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function getSelectedFilters() {
         return Array.from(filterSelected.querySelectorAll('p')).map(p => p.textContent.trim());
     }
-
     /**
      * Search for recipes that match the keyword and selected filters.
      * @param {string} queryWord - The search keyword.
@@ -91,18 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesQuery && matchesFilters;
         });
     }
-
     /**
      * Display the filtered recipe results.
      * @param {Array} results - List of recipes to display.
      */
     function displayResults(results) {
-        const cardsContainer = document.getElementById('cardsContainer');
+        const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = '';
         results.forEach(recipe => generateCard(recipe));
         updateRecipeCount(results.length)
     }
-
     /**
      * Display all recipes sorted alphabetically.
      */
@@ -110,22 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const sortedRecipes = [...recipes].sort((a, b) => a.name > b.name);
         displayResults(sortedRecipes);
     }
-
     /**
      * Clear the displayed results and show all recipes.
      */
     function clearResults() {
-        const cardsContainer = document.getElementById('cardsContainer');
+        const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = '';
         displayAllRecipesAlphabetically();
     }
-
     /**
      * Update the recipe count display.
      * @param {number} count - The number of recipes to display.
      */
     function updateRecipeCount(count) {
-        const recipeCountElement = document.getElementById('recipeCount');
+        const recipeCountElement = document.getElementById('recipe-count');
         recipeCountElement.textContent = `${count} recettes`;
     }
 });

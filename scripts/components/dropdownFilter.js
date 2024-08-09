@@ -2,7 +2,6 @@
  * Initializes the dropdown filter elements and sets their HTML content.
  */
 const dropdownFilter = document.getElementById('dropdown-filter');
-
 dropdownFilter.innerHTML = `
     <div class="flex gap-8 ">
         <nav id="nav-ingredients" class="bg-white w-48 h-14 flex flex-col items-center py-1 rounded-lg overflow-hidden">
@@ -48,9 +47,8 @@ dropdownFilter.innerHTML = `
             </div>
         </nav>
     </div>
-    <p id="recipeCount" class="font-anton text-xl"></p>
+    <p id="recipe-count" class="font-anton text-xl"></p>
 `;
-
 /**
  * Sets up event listeners and handles the initialization of various elements when the DOM content is loaded.
  */
@@ -81,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const imgIngredients = document.getElementById('img-ingredients');
     const imgAppliances = document.getElementById('img-appliances');
     const imgUstensils = document.getElementById('img-ustensils');
-
     /**
      * Toggles the height of the navigation element and updates the image when the button is clicked or when the mouse leaves the navigation element.
      * @param {HTMLElement} navElement - The navigation element to toggle.
@@ -106,53 +103,63 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
+    // Apply handleNavToggle to each filter dropdown
     handleNavToggle(navIngredients, ingredientInput, imgIngredients, btnIngredients);
     handleNavToggle(navAppliance, applianceInput, imgAppliances, btnAppliances);
     handleNavToggle(navUstensils, ustensilInput, imgUstensils, btnUstensils);
+    /**
+     * Sets up the clear button functionality for an input element.
+     * @param {HTMLElement} inputElement - The input element.
+     * @param {HTMLElement} clearButton - The clear button element.
+     * @param {Function} filterFunction - The function to call when clearing the input.
+     */
+    function setupClearButton(inputElement, clearButton, filterFunction) {
+        clearButton.addEventListener('click', () => {
+            inputElement.value = '';
+            filterFunction();
+            clearButton.classList.add('hidden');
+        });
 
-    clearIngredientInput.addEventListener('click', () => {
-        ingredientInput.value = '';
-        filterIngredients();
-        clearIngredientInput.classList.add('hidden');
-    });
+        inputElement.addEventListener('input', () => {
+            if (inputElement.value) {
+                clearButton.classList.remove('hidden');
+            } else {
+                clearButton.classList.add('hidden');
+            }
+        });
+    }
+    setupClearButton(ingredientInput, clearIngredientInput, filterIngredients);
+    setupClearButton(applianceInput, clearApplianceInput, filterAppliances);
+    setupClearButton(ustensilInput, clearUstensilInput, filterUstensils);
+    /**
+     * Sets up the clear button and input event listeners for a filter.
+     * @param {HTMLElement} inputElement - The input element for the filter.
+     * @param {HTMLElement} clearButton - The button to clear the input field.
+     * @param {Function} filterFunction - The function to filter items based on input.
+     */
+    function setupFilterInput(inputElement, clearButton, filterFunction) {
+        // Toggle visibility of the clear button based on input value
+        inputElement.addEventListener('input', () => {
+            clearButton.classList.toggle('hidden', !inputElement.value);
+            filterFunction();
+        });
 
-    clearApplianceInput.addEventListener('click', () => {
-        applianceInput.value = '';
-        filterAppliances();
-        clearApplianceInput.classList.add('hidden');
-    });
+        // Clear the input field and hide the clear button when clicked
+        clearButton.addEventListener('click', () => {
+            inputElement.value = '';
+            filterFunction();
+            clearButton.classList.add('hidden');
+        });
+    }
 
-    clearUstensilInput.addEventListener('click', () => {
-        ustensilInput.value = '';
-        filterUstensils();
-        clearUstensilInput.classList.add('hidden');
-    });
+    // Setup for ingredient input
+    setupFilterInput(ingredientInput, clearIngredientInput, filterIngredients);
 
-    ingredientInput.addEventListener('input', () => {
-        if (ingredientInput.value) {
-            clearIngredientInput.classList.remove('hidden');
-        } else {
-            clearIngredientInput.classList.add('hidden');
-        }
-    });
+    // Setup for appliance input
+    setupFilterInput(applianceInput, clearApplianceInput, filterAppliances);
 
-    applianceInput.addEventListener('input', () => {
-        if (applianceInput.value) {
-            clearApplianceInput.classList.remove('hidden');
-        } else {
-            clearApplianceInput.classList.add('hidden');
-        }
-    });
-
-    ustensilInput.addEventListener('input', () => {
-        if (ustensilInput.value) {
-            clearUstensilInput.classList.remove('hidden');
-        } else {
-            clearUstensilInput.classList.add('hidden');
-        }
-    });
-
+    // Setup for ustensil input
+    setupFilterInput(ustensilInput, clearUstensilInput, filterUstensils);
     /**
      * Capitalizes the first letter of a string and makes the rest of the string lowercase.
      * @param {string} string - The string to capitalize.
@@ -161,20 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
-
     /**
      * Extracts unique ingredients from a list of recipes.
      * @param {Array} recipes - The list of recipes.
      * @returns {Array} - The list of unique ingredients.
      */
     function getUniqueIngredients(recipes) {
-        // console.log(recipes);
         const allIngredients = recipes.flatMap(recipe => recipe.ingredients.map(ing => {
             return ing.ingredient.toLowerCase();
         }));
         // return ;
         const ingredients = [...new Set(allIngredients)];
-        console.log(ingredients);
         return ingredients;
     }
     /**
@@ -189,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const appliances = [...new Set(allAppliances)];
         return appliances;
     }
-
     /**
      * Extracts unique utensils from a list of recipes.
      * @param {Array} recipes - The list of recipes.
@@ -202,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const ustensils = [...new Set(allUstensils)];
         return ustensils;
     }
-
     /**
      * Displays a list of items in a given element.
      * @param {Array} items - The items to display.
@@ -218,7 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
     /**
      * Adds a selected filter to the list of filters and filters the recipes.
      * @param {string} text - The text of the filter to add.
@@ -243,6 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         li.classList.remove('selected');
                     }
                 });
+                closeDropdown(navIngredients, imgIngredients);
+                closeDropdown(navAppliance, imgAppliances);
+                closeDropdown(navUstensils, imgUstensils);
                 p.remove();
                 filterRecipes();
             });
@@ -252,7 +256,16 @@ document.addEventListener('DOMContentLoaded', () => {
             filterRecipes();
         }
     }
-
+    /**
+     * Closes the dropdown by setting its height and arrow image.
+     * @param {HTMLElement} navElement - The navigation element to close.
+     * @param {HTMLElement} imgElement - The image element to update.
+     */
+    function closeDropdown(navElement, imgElement) {
+        navElement.classList.add('h-14');
+        navElement.classList.remove('h-auto');
+        imgElement.src = 'assets/elements/VectorUp.png';
+    }
     /**
      * Gets the list of selected filters.
      * @returns {Array} - The list of selected filters.
@@ -260,7 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function getSelectedFilters() {
         return Array.from(filterSelected.querySelectorAll('p')).map(p => p.textContent);
     }
-
     /**
      * Filters the recipes based on the selected filters and displays the results.
      */
@@ -285,21 +297,19 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {number} count - The number of recipes to display.
      */
     function updateRecipeCount(count) {
-        const recipeCountElement = document.getElementById('recipeCount');
+        const recipeCountElement = document.getElementById('recipe-count');
         recipeCountElement.textContent = `${count} recettes`;
     }
-
     /**
      * Displays the filtered recipes.
      * @param {Array} results - The list of filtered recipes.
      */
     function displayResults(results) {
-        const cardsContainer = document.getElementById('cardsContainer');
+        const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = '';
         results.forEach(recipe => generateCard(recipe));
         updateRecipeCount(results.length);
     }
-
     /**
      * Filters and displays the ingredients based on the input value.
      */
@@ -310,7 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         displayList(filteredIngredients, ingredientList);
     }
-
     /**
      * Filters and displays the appliances based on the input value.
      */
@@ -321,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         displayList(filteredAppliances, applianceList);
     }
-
     /**
      * Filters and displays the ustensils based on the input value.
      */
@@ -332,8 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         displayList(filteredUstensils, ustensilList);
     }
-
-    // Extraire et afficher les ingrédients, appareils et ustensiles
     const uniqueIngredients = getUniqueIngredients(recipes);
     const uniqueAppliances = getUniqueAppliances(recipes);
     const uniqueUstensils = getUniqueUstensils(recipes);
@@ -341,12 +347,18 @@ document.addEventListener('DOMContentLoaded', () => {
     displayList(uniqueIngredients, ingredientList);
     displayList(uniqueAppliances, applianceList);
     displayList(uniqueUstensils, ustensilList);
-
-    // Ajouter des écouteurs d'événements pour les inputs des dropdown
-    ingredientInput.addEventListener('input', filterIngredients);
-    applianceInput.addEventListener('input', filterAppliances);
-    ustensilInput.addEventListener('input', filterUstensils);
-
-    // Mettre à jour le compteur de recettes lors du chargement initial
+    /**
+     * Filters and displays the list based on the input value.
+     * @param {string} query - The search query.
+     * @param {Array} itemList - The list of items to filter.
+     * @param {HTMLElement} listElement - The HTML element where items will be displayed.
+     */
+    function filterList(query, itemList, listElement) {
+        const filteredItems = itemList.filter(item => item.toLowerCase().includes(query));
+        displayList(filteredItems, listElement);
+    }
+    ingredientInput.addEventListener('input', () => filterList(ingredientInput.value.toLowerCase(), uniqueIngredients, ingredientList));
+    applianceInput.addEventListener('input', () => filterList(applianceInput.value.toLowerCase(), uniqueAppliances, applianceList));
+    ustensilInput.addEventListener('input', () => filterList(ustensilInput.value.toLowerCase(), uniqueUstensils, ustensilList));
     updateRecipeCount(recipes.length);
 });
