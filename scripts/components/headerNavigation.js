@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
         inputHeader.value = '';
         inputHeader.setCustomValidity('');
         clearResults();
-        console.log("Recherche réinitialisée");
     });
     /**
      * Control the validity of the input and display results if valid.
