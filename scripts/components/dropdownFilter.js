@@ -10,12 +10,12 @@ dropdownFilter.innerHTML = `
                 <img id="img-ingredients" src="assets/elements/VectorUp.png" alt="fleche" class="w-4 h-1.5">
             </div>
             <div class="flex w-40 gap-x-2 items-center border border-slate-200 rounded-sm">
-                <input id="ingredient-input" type="text" name="search" class="w-full">
+                <input id="ingredients-input" type="text" name="search" class="w-full">
                 <img id="clear-ingredient-input" src="assets/elements/Vector.png" alt="clear" class="w-2 h-2 cursor-pointer hidden">
                 <img src="assets/elements/loop2.svg" alt="loop" class="w-4 mr-2">
             </div>
             <div>
-                <ul class="w-full pt-4" id="ingredient-list"></ul>
+                <ul class="w-full pt-4" id="ingredients-list"></ul>
             </div>
         </nav>
         <nav id="nav-appliance" class="bg-white w-48 h-14 flex flex-col items-center py-1 rounded-lg overflow-hidden">
@@ -38,12 +38,12 @@ dropdownFilter.innerHTML = `
                 <img id="img-ustensils" src="assets/elements/VectorUp.png" alt="fleche" class="w-4 h-1.5">
             </div>
             <div class="flex w-40 gap-x-2 items-center border border-slate-200 rounded-sm">
-                <input id="ustensil-input" type="text" name="search" class="w-full">
+                <input id="ustensils-input" type="text" name="search" class="w-full">
                 <img id="clear-ustensil-input" src="assets/elements/Vector.png" alt="clear" class="w-2 h-2 cursor-pointer hidden">
                 <img src="assets/elements/loop2.svg" alt="loop" class="w-4 mr-2">
             </div>
             <div>
-                <ul class="w-full pt-4" id="ustensil-list"></ul>
+                <ul class="w-full pt-4" id="ustensils-list"></ul>
             </div>
         </nav>
     </div>
@@ -54,13 +54,13 @@ dropdownFilter.innerHTML = `
  */
 document.addEventListener('DOMContentLoaded', () => {
     // INPUT
-    const ingredientInput = document.getElementById('ingredient-input');
+    const ingredientsInput = document.getElementById('ingredients-input');
     const applianceInput = document.getElementById('appliance-input');
-    const ustensilInput = document.getElementById('ustensil-input');
+    const ustensilsInput = document.getElementById('ustensils-input');
     // LIST
-    const ingredientList = document.getElementById('ingredient-list');
-    const applianceList = document.getElementById('appliance-list');
-    const ustensilList = document.getElementById('ustensil-list');
+    const ingredientsList = document.getElementById('ingredients-list');
+    const appliancesList = document.getElementById('appliance-list');
+    const ustensilsList = document.getElementById('ustensils-list');
     // FILTER SELECTED
     const filterSelected = document.getElementById('filter-selected');
     // CLEAR BUTTONS
@@ -94,27 +94,67 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {HTMLElement} imgElement - The image element to update.
      * @param {HTMLElement} buttonElement - The button element to attach the click event listener.
      */
+    // function handleNavToggle(navElement, inputElement, imgElement, buttonElement) {
+    //     buttonElement.addEventListener('click', () => {
+    //         navElement.classList.toggle('h-14');
+    //         if (navElement.classList.contains('h-14')) {
+    //             imgElement.src = 'assets/elements/VectorUp.png';
+    //         } else {
+    //             imgElement.src = 'assets/elements/VectorDown.png';
+    //         }
+    //     });
+    //     navElement.addEventListener('mouseleave', () => {
+    //         // Vérifier si l'input est vide et s'il n'y a pas d'éléments sélectionnés
+    //         if (!inputElement.value && !hasSelectedItems(navElement.querySelector('ul'))) {
+    //             navElement.classList.add('h-14');
+    //             imgElement.src = 'assets/elements/VectorUp.png';
+    //         }
+    //     });
+    // navElement.addEventListener('mouseleave', () => {
+    //     if (!inputElement.value && !getSelectedFilters().length) {
+    //         navElement.classList.add('h-14');
+    //         imgElement.src = 'assets/elements/VectorUp.png';
+    //     }
+    // });
+
+    // }
+    /**
+     * Toggles the height of the navigation element and updates the image when the button is clicked or when the mouse leaves the navigation element.
+     * @param {HTMLElement} navElement - The navigation element to toggle.
+     * @param {HTMLElement} inputElement - The input element associated with the navigation.
+     * @param {HTMLElement} imgElement - The image element to update.
+     * @param {HTMLElement} buttonElement - The button element to attach the click event listener.
+     */
     function handleNavToggle(navElement, inputElement, imgElement, buttonElement) {
         buttonElement.addEventListener('click', () => {
-            navElement.classList.toggle('h-14');
-            if (navElement.classList.contains('h-14')) {
-                imgElement.src = 'assets/elements/VectorUp.png';
-            } else {
-                imgElement.src = 'assets/elements/VectorDown.png';
-            }
+            const isCollapsed = navElement.classList.toggle('h-14');
+            imgElement.src = isCollapsed ? 'assets/elements/VectorUp.png' : 'assets/elements/VectorDown.png';
         });
 
         navElement.addEventListener('mouseleave', () => {
-            if (!inputElement.value && !getSelectedFilters().length) {
+            if (!inputElement.value && !hasSelectedItems(navElement.querySelector('ul'))) {
                 navElement.classList.add('h-14');
                 imgElement.src = 'assets/elements/VectorUp.png';
             }
         });
     }
+    // function handleNavToggle(navElement, inputElement, imgElement, buttonElement) {
+    //     buttonElement.addEventListener('click', () => {
+    //         navElement.classList.toggle('h-auto');
+    //         imgElement.src = navElement.classList.contains('h-auto') ? 'assets/elements/VectorDown.png' : 'assets/elements/VectorUp.png';
+    //     });
+
+    //     navElement.addEventListener('mouseleave', () => {
+    //         if (!inputElement.value && !hasSelectedItems(navElement.querySelector('ul'))) {
+    //             navElement.classList.remove('h-auto');
+    //             imgElement.src = 'assets/elements/VectorUp.png';
+    //         }
+    //     });
+    // }
     // Apply handleNavToggle to each filter dropdown
-    handleNavToggle(navIngredients, ingredientInput, imgIngredients, btnIngredients);
+    handleNavToggle(navIngredients, ingredientsInput, imgIngredients, btnIngredients);
     handleNavToggle(navAppliance, applianceInput, imgAppliances, btnAppliances);
-    handleNavToggle(navUstensils, ustensilInput, imgUstensils, btnUstensils);
+    handleNavToggle(navUstensils, ustensilsInput, imgUstensils, btnUstensils);
     /**
      * Sets up the clear button functionality for an input element.
      * @param {HTMLElement} inputElement - The input element.
@@ -136,9 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    setupClearButton(ingredientInput, clearIngredientInput, filterIngredients);
+
+    setupClearButton(ingredientsInput, clearIngredientInput, filterIngredients);
     setupClearButton(applianceInput, clearApplianceInput, filterAppliances);
-    setupClearButton(ustensilInput, clearUstensilInput, filterUstensils);
+    setupClearButton(ustensilsInput, clearUstensilInput, filterUstensils);
+
     /**
      * Sets up the clear button and input event listeners for a filter.
      * @param {HTMLElement} inputElement - The input element for the filter.
@@ -161,13 +203,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Setup for ingredient input
-    setupFilterInput(ingredientInput, clearIngredientInput, filterIngredients);
+    setupFilterInput(ingredientsInput, clearIngredientInput, filterIngredients);
 
     // Setup for appliance input
     setupFilterInput(applianceInput, clearApplianceInput, filterAppliances);
 
     // Setup for ustensil input
-    setupFilterInput(ustensilInput, clearUstensilInput, filterUstensils);
+    setupFilterInput(ustensilsInput, clearUstensilInput, filterUstensils);
     /**
      * Capitalizes the first letter of a string and makes the rest of the string lowercase.
      * @param {string} string - The string to capitalize.
@@ -218,27 +260,61 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {Array} items - The items to display.
      * @param {HTMLElement} element - The element to display the items in.
      */
-    function displayList(items, element) {
-        element.innerHTML = items.map(item => `<li class="pt-1 p-3 hover:bg-[#FFD15B]">${capitalizeFirstLetter(item)}</li>`).join('');
+    // function displayList(items, element, type) {
+    //     element.innerHTML = items.map(item => `<li class="pt-1 p-3 hover:bg-[#FFD15B]">${capitalizeFirstLetter(item)}</li>`).join('');
+    //     element.querySelectorAll('li').forEach(item => {
+    //         item.addEventListener('click', () => {
+    //             item.classList.toggle('selected');
+    //             addFilter(item.textContent, type);
+    //             filterRecipes();
+    //         });
+    //     });
+    // }
+    /**
+     * Displays a list of items in a given element.
+     * @param {Array} items - The items to display.
+     * @param {HTMLElement} element - The element to display the items in.
+     * @param {string} type - The type of items being displayed (e.g., 'ingredient', 'appliance', 'ustensil').
+     */
+    function displayList(items, element, type) {
+        // console.log('displayList', type);
+        // console.log('displayList', items);
+
+        element.innerHTML = items.map(item => `<li class="w-full m-0 pt-1 p-3 hover:bg-[#FFD15B]">${capitalizeFirstLetter(item)}</li>`).join('');
         element.querySelectorAll('li').forEach(item => {
             item.addEventListener('click', () => {
                 item.classList.toggle('selected');
-                addFilter(item.textContent);
+                // item.classList.add('w-full');// sans doute inutile##########################
+                addFilter(item.textContent, type);  // Passage de `type` lors de l'appel
                 filterRecipes();
+
+                // Effacer l'input après la sélection d'un élément
+                if (type === 'ingredients') {
+                    ingredientsInput.value = '';
+                } else if (type === 'appliances') {
+                    applianceInput.value = '';
+                } else if (type === 'ustensils') {
+                    ustensilsInput.value = '';
+                }
             });
         });
     }
     /**
+     Å
      * Adds a selected filter to the list of filters and filters the recipes.
      * @param {string} text - The text of the filter to add.
      */
-    function addFilter(text) {
+    function addFilter(text, type) {
         const existingFilters = Array.from(filterSelected.getElementsByTagName('p')).map(p => p.textContent.toLowerCase());
-
+        console.log('addFilter', type);
         if (!existingFilters.includes(text.toLowerCase())) {
             const p = document.createElement('p');
             p.className = "w-36 h-14 bg-[#FFD15B] rounded-lg flex justify-between items-center p-2";
             p.textContent = text;
+            // p.setAttribute('data-type', type);
+
+            const pluralType = convertToPlural(type);
+            p.setAttribute('data-type', pluralType);
 
             const img = document.createElement('img');
             img.id = "cancel";
@@ -246,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             img.alt = "cancel";
             img.className = "w-3.5 h-3.5 ml-2 cursor-pointer";
             img.addEventListener('click', () => {
-                const liElements = document.querySelectorAll(`#ingredient-list li, #appliance-list li, #ustensil-list li`);
+                const liElements = document.querySelectorAll(`#ingredients-list li, #appliance-list li, #ustensils-list li`);
                 liElements.forEach(li => {
                     if (li.textContent.toLowerCase() === text.toLowerCase()) {
                         li.classList.remove('selected');
@@ -264,6 +340,19 @@ document.addEventListener('DOMContentLoaded', () => {
             filterRecipes();
         }
     }
+    //Tricherie -> convertir data-type au pluriel
+    function convertToPlural(type) {
+        switch (type) {
+            case 'ingredient':
+                return 'ingredients';
+            case 'appliance':
+                return 'appliances';
+            case 'ustensil':
+                return 'ustensils';
+            default:
+                return type;
+        }
+    }
     /**
      * Closes the dropdown by setting its height and arrow image.
      * @param {HTMLElement} navElement - The navigation element to close.
@@ -276,29 +365,100 @@ document.addEventListener('DOMContentLoaded', () => {
             imgElement.src = 'assets/elements/VectorUp.png';
         }
     }
-    /**
-     * Gets the list of selected filters.
-     * @returns {Array} - The list of selected filters.
-     */
     function getSelectedFilters() {
-        return Array.from(filterSelected.querySelectorAll('p')).map(p => p.textContent);
+        const filters = {
+            ingredients: [],
+            appliances: [],
+            ustensils: []
+        };
+
+        const filterSelectedElement = document.getElementById('filter-selected');
+        const filterElements = Array.from(filterSelectedElement.querySelectorAll('p'));
+        console.log('juste après avoir créé filterElements', filterElements);
+
+        filterElements.forEach(p => {
+            const type = p.getAttribute('data-type');
+            // console.log(p.type);
+            const text = p.textContent.trim();
+            console.log('Processing:', { type, text });
+            console.log('Filter keys:', Object.keys(filters), typeof filters, typeof filterElements);
+            if (filters.hasOwnProperty(type)) {
+                filters[type].push(text.toLowerCase());// ??????? Je récupère bien le type et le texte mais j'entre dans le else
+                console.log('dans la condition de filterElements :', filters, typeof filters, typeof filterElements);
+            } else {
+                console.error(`filter type: ${type}`);
+            }
+        });
+
+        // Array.from(document.getElementById('filter-selected').querySelectorAll('p')).forEach(p => {
+        //     const type = p.getAttribute('data-type');
+        //     // console.log(p.type);
+        //     const text = p.textContent.trim();
+        //     if (filters[type]) {
+        //         filters[type].push(text.toLowerCase());
+        //     }
+        // });
+        console.log('getSelectedFilters', filters, typeof filters);
+        console.log('getSelectedfilters : const filterElements :', filterElements);
+        return filters;
     }
+
+
     /**
      * Filters the recipes based on the selected filters and displays the results.
      */
+    // function filterRecipes() {
+    //     const selectedFilters = getSelectedFilters();
+    //     const filteredRecipes = recipes.filter(recipe => {
+    //         const ingredientMatch = selectedFilters.every(filter =>
+    //             recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase()))
+    //         );
+    //         const applianceMatch = selectedFilters.every(filter =>
+    //             recipe.appliance.toLowerCase().includes(filter.toLowerCase())
+    //         );
+    //         const ustensilMatch = selectedFilters.every(filter =>
+    //             recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
+    //         );
+    //         return ingredientMatch || applianceMatch || ustensilMatch;
+    //     });
+    //     displayResults(filteredRecipes);
+    // }
+    // function filterRecipes() {
+    //     const selectedFilters = getSelectedFilters();
+    //     const filteredRecipes = recipes.filter(recipe => {
+    //         const ingredientMatch = selectedFilters.ingredients.every(filter =>
+    //             recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase()))
+    //         );
+    //         const applianceMatch = selectedFilters.appliances.every(filter =>
+    //             recipe.appliance.toLowerCase().includes(filter.toLowerCase())
+    //         );
+    //         const ustensilMatch = selectedFilters.ustensils.every(filter =>
+    //             recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
+    //         );
+    //         return ingredientMatch && applianceMatch && ustensilMatch;
+    //     });
+    //     displayResults(filteredRecipes);
+    // }
     function filterRecipes() {
         const selectedFilters = getSelectedFilters();
+        console.log('filterRecipes', selectedFilters);
+        const query = document.getElementById('input-header').value.toLowerCase();
         const filteredRecipes = recipes.filter(recipe => {
-            const ingredientMatch = selectedFilters.every(filter =>
+            const ingredientMatch = selectedFilters.ingredients.every(filter =>
                 recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase()))
             );
-            const applianceMatch = selectedFilters.every(filter =>
+            const applianceMatch = selectedFilters.appliances.every(filter =>
                 recipe.appliance.toLowerCase().includes(filter.toLowerCase())
             );
-            const ustensilMatch = selectedFilters.every(filter =>
+            const ustensilMatch = selectedFilters.ustensils.every(filter =>
                 recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
             );
-            return ingredientMatch || applianceMatch || ustensilMatch;
+
+            const matchesQuery = query.length < 3 || recipe.name.toLowerCase().includes(query) ||
+                recipe.description.toLowerCase().includes(query) ||
+                recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(query));
+
+            return ingredientMatch && applianceMatch && ustensilMatch && matchesQuery;
         });
         displayResults(filteredRecipes);
     }
@@ -324,11 +484,11 @@ document.addEventListener('DOMContentLoaded', () => {
      * Filters and displays the ingredients based on the input value.
      */
     function filterIngredients() {
-        const query = ingredientInput.value.toLowerCase();
+        const query = ingredientsInput.value.toLowerCase();
         const filteredIngredients = uniqueIngredients.filter(ingredient =>
             ingredient.toLowerCase().includes(query)
         );
-        displayList(filteredIngredients, ingredientList);
+        displayList(filteredIngredients, ingredientsList, 'ingredients');
     }
     /**
      * Filters and displays the appliances based on the input value.
@@ -338,37 +498,38 @@ document.addEventListener('DOMContentLoaded', () => {
         const filteredAppliances = uniqueAppliances.filter(appliance =>
             appliance.toLowerCase().includes(query)
         );
-        displayList(filteredAppliances, applianceList);
+        displayList(filteredAppliances, appliancesList, 'appliances');
     }
     /**
      * Filters and displays the ustensils based on the input value.
      */
     function filterUstensils() {
-        const query = ustensilInput.value.toLowerCase();
+        const query = ustensilsInput.value.toLowerCase();
         const filteredUstensils = uniqueUstensils.filter(ustensil =>
             ustensil.toLowerCase().includes(query)
         );
-        displayList(filteredUstensils, ustensilList);
+        displayList(filteredUstensils, ustensilsList, 'ustensils');
     }
     const uniqueIngredients = getUniqueIngredients(recipes);
     const uniqueAppliances = getUniqueAppliances(recipes);
     const uniqueUstensils = getUniqueUstensils(recipes);
 
-    displayList(uniqueIngredients, ingredientList);
-    displayList(uniqueAppliances, applianceList);
-    displayList(uniqueUstensils, ustensilList);
+    displayList(uniqueIngredients, ingredientsList, 'ingredients');
+    displayList(uniqueAppliances, appliancesList, 'appliances');
+    displayList(uniqueUstensils, ustensilsList, 'ustensils');
     /**
      * Filters and displays the list based on the input value.
      * @param {string} query - The search query.
      * @param {Array} itemList - The list of items to filter.
      * @param {HTMLElement} listElement - The HTML element where items will be displayed.
      */
-    function filterList(query, itemList, listElement) {
+    function filterList(query, itemList, listElement, type) {
         const filteredItems = itemList.filter(item => item.toLowerCase().includes(query));
-        displayList(filteredItems, listElement);
+        displayList(filteredItems, listElement, type);
+        // console.log('filterList', type);
     }
-    ingredientInput.addEventListener('input', () => filterList(ingredientInput.value.toLowerCase(), uniqueIngredients, ingredientList));
-    applianceInput.addEventListener('input', () => filterList(applianceInput.value.toLowerCase(), uniqueAppliances, applianceList));
-    ustensilInput.addEventListener('input', () => filterList(ustensilInput.value.toLowerCase(), uniqueUstensils, ustensilList));
+    ingredientsInput.addEventListener('input', () => filterList(ingredientsInput.value.toLowerCase(), uniqueIngredients, ingredientsList));
+    applianceInput.addEventListener('input', () => filterList(applianceInput.value.toLowerCase(), uniqueAppliances, appliancesList));
+    ustensilsInput.addEventListener('input', () => filterList(ustensilsInput.value.toLowerCase(), uniqueUstensils, ustensilsList));
     updateRecipeCount(recipes.length);
 });

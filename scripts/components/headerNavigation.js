@@ -50,26 +50,97 @@ document.addEventListener('DOMContentLoaded', () => {
      * Retrieve the selected filters.
      * @returns {Array} - List of selected filters.
      */
+    // function getSelectedFilters() {
+    //     return Array.from(filterSelected.querySelectorAll('p')).map(p => p.textContent.trim());
+    // }
     function getSelectedFilters() {
-        return Array.from(filterSelected.querySelectorAll('p')).map(p => p.textContent.trim());
+        const filters = {
+            ingredients: [],
+            appliances: [],
+            ustensils: []
+        };
+
+        const filterSelectedElement = document.getElementById('filter-selected');
+        const filterElements = Array.from(filterSelectedElement.querySelectorAll('p'));
+
+        filterElements.forEach(p => {
+            const type = p.getAttribute('data-type');
+            const text = p.textContent.trim();
+            if (filters.hasOwnProperty(type)) {
+                filters[type].push(text.toLowerCase());
+            } else {
+                console.error(`Type de filtre invalide : ${type}`);
+            }
+        });
+
+        return filters;
     }
     /**
      * Search for recipes that match the keyword and selected filters.
      * @param {string} queryWord - The search keyword.
      * @returns {Array} - List of recipes matching the search criteria.
      */
+    // function searchRecipes(queryWord) {
+    //     queryWord = queryWord.toLowerCase();
+    //     const selectedFilters = getSelectedFilters();
+    //     return recipes.filter(recipe => {
+    //         const matchesQuery = recipe.name.toLowerCase().includes(queryWord) ||
+    //             recipe.description.toLowerCase(queryWord).includes(queryWord) ||
+    //             recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(queryWord));
+    //         const matchesFilters = selectedFilters.every(filter =>
+    //             recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())) ||
+    //             recipe.appliance.toLowerCase().includes(filter.toLowerCase()) ||
+    //             recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
+    //         );
+    //         return matchesQuery && matchesFilters;
+    //     });
+    // }
+    // function searchRecipes(queryWord) {
+    //     queryWord = queryWord.toLowerCase();
+    //     const selectedFilters = getSelectedFilters();
+    //     console.log('Selected Filters:', selectedFilters);
+
+    //     return recipes.filter(recipe => {
+    //         const matchesQuery = recipe.name.toLowerCase().includes(queryWord) ||
+    //             recipe.description.toLowerCase().includes(queryWord) ||
+    //             recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(queryWord));
+
+    //         const matchesFilters = selectedFilters.ingredients.every(filter =>
+    //             recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase()))
+    //         ) && selectedFilters.appliances.every(filter =>
+    //             recipe.appliance.toLowerCase().includes(filter.toLowerCase())
+    //         ) && selectedFilters.ustensils.every(filter =>
+    //             recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
+    //         );
+
+    //         return matchesQuery && matchesFilters;
+    //     });
+    // }
     function searchRecipes(queryWord) {
         queryWord = queryWord.toLowerCase();
+        console.log('avant d\'appeler getSelectedFilters', getSelectedFilters());
         const selectedFilters = getSelectedFilters();
+        console.log('Selected Filters:', selectedFilters, typeof selectedFilters);
+        console.log('Ingredients:', selectedFilters.ingredients);
+        console.log('Appliances:', selectedFilters.appliances);
+        console.log('Ustensils:', selectedFilters.ustensils);
+
         return recipes.filter(recipe => {
+            // Check if the recipe matches the search query
             const matchesQuery = recipe.name.toLowerCase().includes(queryWord) ||
-                recipe.description.toLowerCase(queryWord).includes(queryWord) ||
+                recipe.description.toLowerCase().includes(queryWord) ||
                 recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(queryWord));
-            const matchesFilters = selectedFilters.every(filter =>
-                recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter.toLowerCase())) ||
-                recipe.appliance.toLowerCase().includes(filter.toLowerCase()) ||
-                recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter.toLowerCase()))
+            console.log(matchesQuery);
+
+            // Check if the recipe matches the selected filters
+            const matchesFilters = selectedFilters.ingredients.every(filter =>
+                recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter))
+            ) && selectedFilters.appliances.every(filter =>
+                recipe.appliance.toLowerCase().includes(filter)
+            ) && selectedFilters.ustensils.every(filter =>
+                recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter))
             );
+            console.log(matchesFilters);
             return matchesQuery && matchesFilters;
         });
     }
