@@ -26,5 +26,5 @@ function generateCard(recipe) {
             </ul>
         </div>
 `;
-    cardsContainer.appendChild(card);//[478px]
+    cardsContainer.appendChild(card);
 }
