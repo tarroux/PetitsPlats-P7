@@ -37,8 +37,9 @@
                 <div class="bg-white w-full">
                     <div class="w-full p-4 flex justify-between items-center">
                         <button id="btn-ingredients" type="button" class="w-full flex justify-start">Ingrédients</button>
-                        <img id="img-ingredients" src="assets/elements/VectorUp.png" alt="fleche" class="w-4 h-1.5">
+                        <img id="img-ingredients" src="assets/elements/VectorUp.png" alt="fleche" class="w-4 h-1.5 rotate-0">
                     </div>
+                    <div class="content hidden">
                     <div class="flex w-40 gap-x-2 items-center border border-slate-200 rounded-sm mx-auto">
                         <input id="ingredient-input" type="text" name="search" class="w-full">
                         <img id="clear-ingredient-input" src="assets/elements/Vector.png" alt="clear" class="w-2 h-2 cursor-pointer hidden">
@@ -49,6 +50,7 @@
                             <li>cuillere a soupe</li>
                         </ul>
                     </div>
+                </div>
                 </div>
             </nav>
             <nav id="nav-appliances" class=" w-48 flex flex-col items-center py-1 rounded-lg overflow-hidden">
@@ -62,7 +64,7 @@
                         <img id="clear-appliance-input" src="assets/elements/Vector.png" alt="clear" class="w-2 h-2 cursor-pointer hidden">
                         <img src="assets/elements/loop2.svg" alt="loop" class="w-4 mr-2">
                     </div>
-                    <div class="w-full">
+                    <div class="w-full content">
                         <ul class="w-full pt-4" id="appliances-list"></ul>
                     </div>
                 </div>
@@ -78,7 +80,7 @@
                         <img id="clear-ustensil-input" src="assets/elements/Vector.png" alt="clear" class="w-2 h-2 cursor-pointer hidden">
                         <img src="assets/elements/loop2.svg" alt="loop" class="w-4 mr-2">
                     </div>
-                    <div class="w-full">
+                    <div class="w-full content">
                         <ul class="w-full pt-4" id="ustensils-list"></ul>
                     </div>
                 </div>  

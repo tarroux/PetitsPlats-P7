@@ -47,20 +47,38 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {HTMLElement} buttonElement - The button element to attach the click event listener.
      */
     function handleNavToggle(navElement, inputElement, imgElement, buttonElement) {
+        let contentEl, isOpen = false;
         buttonElement.addEventListener('click', () => {
-            navElement.classList.toggle('h-14');
-            imgElement.classList.toggle('rotate-180');
+            contentEl = navElement.querySelector('.content');
+            console.log(contentEl);
+            console.log(imgElement.classList.contains('rotate-0'));
+            // contentEl.classList.toggle('hidden');
+            if (isOpen) {
+                imgElement.classList.remove('rotate-0')
+                imgElement.classList.add('rotate-180')
+                contentEl.classList.remove('hidden')
+                isOpen = !isOpen
+            }
+            else {
+                imgElement.classList.add('rotate-0');
+                imgElement.classList.remove('rotate-180')
+                contentEl.classList.add('hidden')
+                isOpen = !isOpen
+
+            }
+            // else
+            // imgElement.classList.add('rotate-180');
+            // imgElement.classList.remove('rotate-0');
+            // imgElement.classList.toggle('rotate-180');
         });
 
         navElement.addEventListener('mouseleave', () => {
-            // console.log(inputElement.value);
-            // console.log(navElement.querySelector('lil'));
-            // console.log(navElement);
-            // console.log(navElement.querySelector('.selected'));
             if (!inputElement.value && !navElement.querySelector('.selected')) {
-                navElement.classList.add('h-14');
-                imgElement.src = 'assets/elements/VectorUp.png';
-                imgElement.classList.toggle('rotate-180');
+                // contentEl.classList.add('hidden');
+                // imgElement.classList.add('rotate-0');
+            } else {
+                imgElement.classList.remove('rotate-180');
+
             }
         });
     }
@@ -202,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function addFilter(text, type) {
         const existingFilters = Array.from(filterSelected.getElementsByTagName('p')).map(p => p.textContent.toLowerCase());
         // console.log('addFilter', type);
+        console.log(existingFilters);
         if (!existingFilters.includes(text.toLowerCase())) {
             const p = document.createElement('p');
             p.className = "w-36 h-14 bg-[#FFD15B] selected rounded-lg flex justify-between items-center p-2";

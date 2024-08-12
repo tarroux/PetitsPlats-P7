@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         queryWord = queryWord.toLowerCase();
         // console.log('avant d\'appeler getSelectedFilters', getSelectedFilters());
         const selectedFilters = getSelectedFilters();
+        console.log('selectedFilters ', selectedFilters);
         console.log('Selected Filters:', selectedFilters, typeof selectedFilters);
         console.log('Ingredients:', selectedFilters.ingredients);
         console.log('Appliances:', selectedFilters.appliances);
