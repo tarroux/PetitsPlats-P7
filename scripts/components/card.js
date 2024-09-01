@@ -1,7 +1,3 @@
-/**
- * Generates a recipe card and appends it to the cards container.
- * @param {Object} recipe - The recipe object to generate the card for.
- */
 function generateCard(recipe) {
     const cardsContainer = document.getElementById('cards-container');
     const card = document.createElement('article');
@@ -14,12 +10,12 @@ function generateCard(recipe) {
             <li class="w-1/2 pb-7 flex flex-col">
                 <p class="text-sm text-[#1B1B1B] font-manrope ">${ingredient.ingredient}</p>
                 <p class="text-sm text-[#7A7A7A] font-manrope ">${ingredient.quantity || ''} ${ingredient.unit || ''}</p>
-            </li>
-        `;
+            </li>`;
     }
+
     card.innerHTML = `
         <div class="relative w-96 h-64">
-            <img class="w-full h-64 object-cover" src="assets/recettes/${recipe.image}" alt="${recipe.name}" loading="lazy" onerror="this.onerror=null;this.src='assets/elements/placeholder.png';">
+            <img class="w-full h-64 object-cover" src="assets/recettes/${recipe.image}" alt="${recipe.name}" loading="lazy" >
             <span class="absolute top-2 right-2 bg-[#FFD15B] text-black text-xs font-semibold py-1 px-2 rounded-full">${recipe.time} min</span>
         </div>
         <div class="p-5 flex flex-col mb-2 ">

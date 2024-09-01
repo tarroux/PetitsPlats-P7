@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,42 +10,111 @@
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200..800&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-    <header class="w-max md:w-auto h-1/4 sm:h-[667px] bg-cover bg-center" style="background-image: url('assets/ImgHeader.png');">
+    <header class="w-max md:w-auto h-1/4 sm:h-[667px] bg-cover bg-center"
+        style="background-image: url('assets/ImgHeader.png');">
         <div class="w-max md:w-auto h-20 p-14 ">
             <img src="assets/elements/logo.png" alt="Logo">
-        </div>  
+        </div>
         <div class="w-max md:w-auto h-2/6">
-            <h1 class="w-auto h-max px-60 pt-24 pb-8 text-[#FFD15B] text-5xl text-center font-anton">CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h1>
+            <h1 class="w-auto h-max px-60 pt-24 pb-8 text-[#FFD15B] text-5xl text-center font-anton">CHERCHEZ PARMI PLUS
+                DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h1>
         </div>
         <div class="flex justify-center mt-8">
             <div class=" w-4/6 flex items-center gap-x-3 border-2 border-white rounded-md bg-white">
-                <input id="input-header" placeholder="Rechercher une recette, un ingrédient, ..." type="text" name="search" class="px-4 py-2 w-full border-white text-[#7A7A7A]font-manrope">
+                <input id="input-header" placeholder="Rechercher une recette, un ingrédient, ..." type="text"
+                    name="search" class="px-4 py-2 w-full border-white text-[#7A7A7A]font-manrope">
                 <img id="reset-button" src="assets/elements/Vector.png" alt="reset" class="w-3.5 h-3.5">
-                <div class="flex items-center justify-center p-1"><!-- id="searchButton"  type="submit"-->
+                <div class="flex items-center justify-center p-1">
                     <img id="loopIcon" src="assets/elements/loop.png" alt="loop">
                 </div>
             </div>
         </div>
     </header>
-    <main class="bg-slate-100 h-auto w-max md:w-auto min-h-screen px-16" >
-    <!-- FILTRES -->
-    <div id="dropdown-filter" class="flex justify-between w-max md:w-auto pt-5 h-auto md:max-h-80 overflow-hidden"><!--h-80-->
-        
-        <!-- <p class="font-anton text-xl">1500 recettes</p> -->
-    </div>
-    <div id="filter-selected" class="mt-5 flex gap-8"></div>
-    <!-- CARDS -->
-    <div id="cards-container" class="w-max md:w-auto my-8 flex flex-wrap justify-between"></div>
-    <p id="error-message" class="flex justify-center font-anton"></p>
-</main>
-    <script src="/recipes.js"></script>
-    <script src="scripts/components/card.js"></script>
-    <script src="scripts/components/dropdownFilter.js"></script>
-    <script src="scripts/components/headerNavigation.js"></script>
-
-    <!-- <script src="scripts/components/dropdownFilter.js"></script> -->
+    <main class="bg-slate-100 h-auto w-max md:w-auto min-h-screen px-16">
+        <!-- FILTRES -->
+        <div id="dropdown-filter" class="flex justify-between w-max md:w-auto pt-5 h-auto md:max-h-80 overflow-hidden">
+            <div class="flex gap-8 ">
+                <nav id="nav-ingredients" data-type="ingredients" class=" w-48 flex flex-col items-center py-1 rounded-lg overflow-hidden">
+                    <div class="bg-white w-full">
+                        <div class="w-full p-4 flex justify-between items-center">
+                            <button id="btn-ingredients" type="button"
+                                class="w-full flex justify-start">Ingrédients</button>
+                            <img class="img-fleche" src="assets/elements/VectorUp.png" alt="fleche"
+                                class="w-4 h-1.5 rotate-0">
+                        </div>
+                        <div class="content hidden">
+                            <div class="flex w-40 gap-x-2 items-center border border-slate-200 rounded-sm mx-auto">
+                                <input id="ingredient-input" type="text" name="search" class="w-full" data-type="ingredients" data-iddropdown="nav-ingredients">
+                                <img id="clear-input" src="assets/elements/Vector.png" alt="clear"
+                                    class="w-2 h-2 cursor-pointer hidden clear-input" data-type="ingredients" data-idDropdown="nav-ingredients">
+                                <img src="assets/elements/loop2.svg" alt="loop" class="w-4 mr-2" class="loop" data-type="ingredients" >
+                            </div>
+                            <div class="w-full content">
+                                <ul class="w-full pt-4 list-dropdown" id="ingredients-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <nav id="nav-appliances" data-type="appliances" class=" w-48 flex flex-col items-center py-1 rounded-lg overflow-hidden">
+                    <div class="bg-white w-full">
+                        <div class="w-full p-4 flex justify-between items-center">
+                            <button id="btn-appliances" type="button"
+                                class="w-full flex justify-start">Appareils</button>
+                            <img class="img-fleche" src="assets/elements/VectorUp.png" alt="fleche"
+                                class="w-4 h-1.5 rotate-0">
+                        </div>
+                        <div class="content hidden">
+                            <div class="flex w-40 gap-x-2 items-center mx-auto border border-slate-200 rounded-sm">
+                                <input id="appliance-input" type="text" name="search" class="w-full" data-type="appliances" data-iddropdown="nav-appliances">
+                                <img id="clear-input" src="assets/elements/Vector.png" alt="clear"
+                                    class="w-2 h-2 cursor-pointer hidden clear-input" data-type="appliances" data-idDropdown="nav-appliances">
+                                <img src="assets/elements/loop2.svg" alt="loop" class="w-4 mr-2" class="loop" data-type="appliances">
+                            </div>
+                            <div class="w-full content">
+                                <ul class="w-full pt-4 list-dropdown" id="appliances-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <nav id="nav-ustensils" data-type="ustensils" class=" w-48 flex flex-col items-center py-1 rounded-lg overflow-hidden">
+                    <div class="bg-white w-full">
+                        <div class="w-full p-4 flex justify-between items-center">
+                            <button id="btn-ustensils" type="button"
+                                class="w-full flex justify-start">Ustensiles</button>
+                            <img class="img-fleche" src="assets/elements/VectorUp.png" alt="fleche"
+                                class="w-4 h-1.5 rotate-0">
+                        </div>
+                        <div class="content hidden">
+                            <div class="flex w-40 gap-x-2 items-center mx-auto border border-slate-200 rounded-sm">
+                                <input id="ustensil-input" type="text" name="search" class="w-full" data-type="ustensils" data-iddropdown="nav-ustensils">
+                                <img id="clear-input" src="assets/elements/Vector.png" alt="clear"
+                                    class="w-2 h-2 cursor-pointer hidden clear-input" data-type="ustensils" data-idDropdown="nav-ustensils">
+                                <img src="assets/elements/loop2.svg" alt="loop" class="w-4 mr-2" class="loop" data-type="ustensils">
+                            </div>
+                            <div class="w-full content">
+                                <ul class="w-full pt-4 list-dropdown" id="ustensils-list"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <p id="recipe-count" class="font-anton text-xl"></p>
+        </div>
+        <div id="filters-selected" class="mt-5 flex gap-8"></div>
+        <!-- CARDS -->
+        <div id="cards-container" class="w-max md:w-auto my-8 flex flex-wrap justify-between"></div>
+        <p id="error-message" class="flex justify-center font-anton"></p>
+    </main>
+    <script src="/scripts/recipes.js" defer></script>
+    <script src="scripts/variables.js" defer></script>
+    <script src="scripts/components/card.js" defer></script>
+    <script src="scripts/components/dropdownFilter.js" defer></script>
+    <script src="scripts/components/headerNavigation.js" defer></script>
 </body>
+
 </html>
