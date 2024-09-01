@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let inputHeader = document.getElementById('input-header');
     const loopIcon = document.getElementById('loopIcon');
     const resetButton = document.getElementById('reset-button');
-    const filterSelected = document.getElementById('filter-selected');
     resetButton.classList.add('hidden');
     displayAllRecipesAlphabetically();
+
     loopIcon.addEventListener('mouseover', () => {
         loopIcon.src = 'assets/elements/yellowLoop.png';
     });
@@ -49,43 +49,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function searchRecipes(queryWord) {
         queryWord = queryWord.toLowerCase();
-        // console.log('avant d\'appeler getSelectedFilters', getSelectedFilters());
-        const selectedFilters = getSelectedFilters();
-        console.log('selectedFilters ', selectedFilters);
-        console.log('Selected Filters:', selectedFilters, typeof selectedFilters);
-        console.log('Ingredients:', selectedFilters.ingredients);
-        console.log('Appliances:', selectedFilters.appliances);
-        console.log('Ustensils:', selectedFilters.ustensils);
-
         return recipes.filter(recipe => {
-            // Check if the recipe matches the search query
+            // Vérifier si la recette correspond à la recherche par mot-clé
             const matchesQuery = recipe.name.toLowerCase().includes(queryWord) ||
                 recipe.description.toLowerCase().includes(queryWord) ||
                 recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(queryWord));
+
             console.log(matchesQuery);
 
-            // Check if the recipe matches the selected filters
-            const matchesFilters = selectedFilters.ingredients.every(filter =>
+            // Vérifier si la recette correspond aux filtres sélectionnés
+            const matchesFilters = uniqueDataList.ingredients.listsfiltered.every(filter =>
                 recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter))
-            ) && selectedFilters.appliances.every(filter =>
+            ) && uniqueDataList.appliances.listsfiltered.every(filter =>
                 recipe.appliance.toLowerCase().includes(filter)
-            ) && selectedFilters.ustensils.every(filter =>
+            ) && uniqueDataList.ustensils.listsfiltered.every(filter =>
                 recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter))
             );
+
             console.log(matchesFilters);
             return matchesQuery && matchesFilters;
         });
     }
-    /**
-     * Display the filtered recipe results.
-     * @param {Array} results - List of recipes to display.
-     */
-    function displayResults(results) {
-        const cardsContainer = document.getElementById('cards-container');
-        cardsContainer.innerHTML = '';
-        results.forEach(recipe => generateCard(recipe));
-        updateRecipeCount(results.length)
-    }
+
+
     /**
      * Display all recipes sorted alphabetically.
      */
@@ -100,13 +86,5 @@ document.addEventListener('DOMContentLoaded', () => {
         const cardsContainer = document.getElementById('cards-container');
         cardsContainer.innerHTML = '';
         displayAllRecipesAlphabetically();
-    }
-    /**
-     * Update the recipe count display.
-     * @param {number} count - The number of recipes to display.
-     */
-    function updateRecipeCount(count) {
-        const recipeCountElement = document.getElementById('recipe-count');
-        recipeCountElement.textContent = `${count} recettes`;
     }
 });

@@ -25,6 +25,6 @@ function generateCard(recipe) {
                 `).join('')}
             </ul>
         </div>
-`;
+    `;
     cardsContainer.appendChild(card);
 }
