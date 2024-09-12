@@ -19,7 +19,7 @@ function generateCard(recipe) {
             <ul class="w-80 flex flex-wrap">
                 ${recipe.ingredients.map(ingredient => `
                     <li class="w-1/2 pb-7 flex flex-col">
-                        <p class="text-sm text-[#1B1B1B] font-manrope ">${ingredient.ingredient}</p>
+                        <p class="w-36 text-sm text-[#1B1B1B] font-manrope ">${ingredient.ingredient}</p>
                         <p class="text-sm text-[#7A7A7A] font-manrope ">${ingredient.quantity || ''} ${ingredient.unit || ''}</p>
                     </li>
                 `).join('')}

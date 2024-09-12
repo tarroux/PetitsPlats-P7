@@ -37,4 +37,3 @@ const uniqueDataList = {
         inputDropdown: ustensilInput,
     }
 };
-

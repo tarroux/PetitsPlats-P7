@@ -34,15 +34,12 @@ function handleNavToggle(navElement, buttonElement, input) {
         }
     });
 }
-
 handleNavToggle(navIngredients, btnIngredients, ingredientInput);
 handleNavToggle(navAppliance, btnAppliances, applianceInput);
 handleNavToggle(navUstensils, btnUstensils, ustensilInput);
-
 uniqueDataList.ingredients.lists = getUniqueIngredients(recipes);
 uniqueDataList.appliances.lists = getUniqueAppliances(recipes);
 uniqueDataList.ustensils.lists = getUniqueUstensils(recipes);
-
 /**
  * Initializes the dropdown lists with the unique items.
  * @param {Object} data - The dataset containing dropdown information.
@@ -56,9 +53,7 @@ function initAllListDropdown(data) {
     }
     document.querySelectorAll('.list-dropdown li').forEach(liEl => liEl.addEventListener('click', handleTag))
 }
-
 initAllListDropdown(uniqueDataList);
-
 /**
  * Handles the selection of a tag (item) in the dropdown and applies the filters.
  * @param {Event} e - The click event.
@@ -67,10 +62,10 @@ function handleTag(e) {
     const type = e.target.getAttribute('data-type');
     const text = (e.target.innerText || e.target.parentElement.innerText).trim().toLowerCase();
     uniqueDataList[type].listsfiltered.includes(text) ? deleteTag(type, text, e.target) : addTag(type, text, e.target)
-    filterRecipes();
-    updateAvailableFilters();
+    const filteredRecipes = searchRecipes(document.getElementById('input-header').value);
+    updateAvailableFilters(filteredRecipes);
+    displayResults(filteredRecipes);
 }
-
 /**
  * Adds a tag (item) to the selected filters and displays it.
  * @param {string} type - The type of the tag (ingredients, appliances, etc.).
@@ -92,7 +87,6 @@ function addTag(type, text, liEl) {
     filterSelected.innerHTML += p;
     document.querySelectorAll('.cancel').forEach(imgEl => imgEl.addEventListener('click', handleTag))
 }
-
 /**
  * Removes a tag (item) from the selected filters and updates the dropdown visibility.
  * @param {string} type - The type of the tag (ingredients, appliances, etc.).
@@ -116,7 +110,6 @@ function deleteTag(type, text, e) {
         }
     })
 }
-
 /**
  * Sets up event listeners for the search inputs and clear buttons in the dropdowns.
  * @param {Object} data - The dataset containing input and clear button information.
@@ -142,7 +135,6 @@ function handleSearchDropdown(data) {
     }
 }
 handleSearchDropdown(uniqueDataList);
-
 /**
  * Populates the dropdown list based on the search query or resets it.
  * @param {Object} dataset - The dataset containing the dropdown type information.
@@ -161,7 +153,6 @@ function populateListDropdown(dataset, reset) {
         displayListDropdown(filteredList, dataset.type);
     }
 }
-
 /**
  * Displays the list of dropdown items after filtering or resetting.
  * @param {Array} items - The list of items to display.
@@ -174,7 +165,6 @@ function displayListDropdown(items, type) {
             </li>`).join('');
     document.querySelectorAll('.list-dropdown li').forEach(liEl => liEl.addEventListener('click', handleTag));
 }
-
 /**
  * Capitalizes the first letter of a string and makes the rest of the string lowercase.
  * @param {string} string - The string to capitalize.
@@ -210,46 +200,14 @@ function getUniqueUstensils(recipes) {
     const allUstensils = recipes.flatMap(recipe => recipe.ustensils.map(ust => ust.toLowerCase()));
     return [...new Set(allUstensils)];
 }
-
-/**
- * Filters recipes based on the selected filters and returns the filtered list.
- * @returns {Array} - The list of filtered recipes.
- */
-function filterRecipes() {
-    const filteredRecipes = recipes.filter(recipe => {
-        // Vérification de la correspondance des filtres
-        const ingredientMatch = uniqueDataList.ingredients.listsfiltered.every(filter =>
-            recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter))
-        );
-        const applianceMatch = uniqueDataList.appliances.listsfiltered.every(filter =>
-            recipe.appliance.toLowerCase().includes(filter)
-        );
-        const ustensilMatch = uniqueDataList.ustensils.listsfiltered.every(filter =>
-            recipe.ustensils.some(ustensil => ustensil.toLowerCase().includes(filter))
-        );
-
-        return ingredientMatch && applianceMatch && ustensilMatch;
-    });
-
-    // Afficher les recettes filtrées
-    displayResults(filteredRecipes);
-
-    // Retourner les recettes filtrées pour d'autres utilisations
-    return filteredRecipes;
-}
-
 /**
  * Updates the available filters based on the filtered recipes.
  */
-function updateAvailableFilters() {
-    const filteredRecipes = filterRecipes();
-
-    // Factoriser la mise à jour des listes disponibles
+function updateAvailableFilters(filteredRecipes) {
     updateFilterOptions('ingredients', getUniqueIngredients(filteredRecipes), 'nav-ingredients');
     updateFilterOptions('ustensils', getUniqueUstensils(filteredRecipes), 'nav-ustensils');
     updateFilterOptions('appliances', getUniqueAppliances(filteredRecipes), 'nav-appliances');
 }
-
 /**
  * Updates the filter options displayed in the dropdown.
  * @param {string} type - The type of filter (ingredients, appliances, etc.).
@@ -260,8 +218,6 @@ function updateFilterOptions(type, availableOptions, dropdownId) {
     uniqueDataList[type].lists = availableOptions;
     populateListDropdown({ type: type, iddropdown: dropdownId }, false);
 }
-
-
 /**
 * Updates the recipe count display.
 * @param {number} count - The number of recipes to display.
